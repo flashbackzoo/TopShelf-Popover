@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>TopShelf Web UI - Overlay</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="js/ts-overlay.js"></script>
+		<style>
+			*[data-ui='overlay-panel']{
+				display:none;
+				background:green;
+			}
+		</style>
+	</head>
+	<body>
+		<a href="firstOverlay" data-ui="overlay-trigger">first trigger</a>
+		<div id="firstOverlay" data-ui="overlay-panel">
+			<div data-ui='overlay-title'>
+				<a href="" data-ui="overlay-close">close</a>
+			</div>
+			first overlay
+		</div>
+		<script>
+			$(function(){
+				$("div[data-ui='overlay-panel']").tsOverlay({
+					"transition": "simple"
+					, "draggable": false
+					, "easyClose": true
+				});
+			});
+		</script>
+	</body>
+</html>
