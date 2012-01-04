@@ -4,6 +4,7 @@
 		var settings = $.extend({
 			"transition": "simple"
 			, "easyClose": true
+			, "draggable": false
 		}, options);
 		
 		return this.each(function() {
@@ -22,13 +23,20 @@
 			var simple = function () {
 				var fx = {};
 				(function() {
-					fx.tranIn = function(o) {
-						$(o).show();
+					fx.tranIn = function(el) {
+						$(el).show();
 					};
 					
-					fx.tranOut = function (o) {
-						$(o).hide();
+					fx.tranOut = function (el) {
+						$(el).hide();
 					};
+					
+					fx.drag = function (el, y, x) {
+						$(el).css({
+							top: y + "px"
+							, left: x + "px"
+						});
+					}
 				})();
 				return fx;
 			};                  
@@ -40,14 +48,20 @@
 			var controls = function(fx, drag) {
 				var ctr = {};
 				(function() {
-					ctr.open = function (popover) {
-						$(popover).addClass("current");
-						fx.tranIn(popover);
+					ctr.open = function (el) {
+						$(el).addClass("current");
+						fx.tranIn(el);
 					};
-					ctr.close = function (popover) {
-						$(popover).removeClass("current");
-						fx.tranOut(popover);
+					
+					ctr.close = function (el) {
+						$(el).removeClass("current");
+						fx.tranOut(el);
 					};
+					
+					ctr.drag = function (el, y, x) {
+						// TODO: work out offset, modify x and y
+						fx.drag(el, y, x);
+					}
 				})();
 				return ctr;
 			};
@@ -86,12 +100,26 @@
                     evt.easyClose = function () {
                         $("html").data("easyCloseSet", true);
                         $(document).bind("click", function(e) {
-                            var currentPopover = $("[data-ui='popover-panel'][class='current']")[0];
-                            if ($(e.target).closest(currentPopover).length < 1 && $(e.target).attr("data-ui") !== "popover-trigger") {
-                                ctr.close(currentPopover);
+                            var el = $("[data-ui='popover-panel'][class='current']")[0];
+                            if ($(e.target).closest(el).length < 1 && $(e.target).attr("data-ui") !== "popover-trigger") {
+                                ctr.close(el);
                             }
                         });
                     };
+                    
+                    evt.drag = function () {
+                    	$(popover.container).bind("mousedown", function(e) {
+                    		var offsetY = e.pageY - popover.container.offsetTop + parseInt($(popover.container).css("margin-top"), 10)
+                    			, offsetX = e.pageX - popover.container.offsetLeft + parseInt($(popover.container).css("margin-left"), 10);
+                    		$(popover.container).bind("mousemove", function(e) {
+                    			ctr.drag(popover.container, e.pageY - offsetY, e.pageX - offsetX);
+                    		});
+                    		$(popover.container).bind("mouseup", function(e) {
+                    			$(popover.container).unbind("mousemove");
+                    			$(popover.container).unbind("mouseup");
+                    		});
+                    	});
+                    }
 				})();
 				return evt;
 			};
@@ -108,6 +136,9 @@
                 evt.closeButton();
                 if ($("html").data("easyCloseSet") !== true && popover.settings.easyClose === true) {
                     evt.easyClose();
+                }
+                if (popover.settings.draggable === true) {
+                	evt.drag();
                 }
 			})();
 		});
