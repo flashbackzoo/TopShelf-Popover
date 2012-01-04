@@ -6,33 +6,28 @@
 		<link rel="stylesheet" href="css/style.css">
 		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 		<script src="js/ts-popover.js"></script>
-		<style>
-			*[data-ui='popover-panel']{
-				display:none;
-                width:300px;
-                height:150px;
-				background:green;
-			}
-            *[data-ui='popover-title']{
-                background:red;
-            }
-		</style>
 	</head>
 	<body>
-		<a href="firstPopover" data-ui="popover-trigger">first trigger</a>
-        <a href="secondPopover" data-ui="popover-trigger">second trigger</a>
-		<div id="firstPopover" data-ui="popover-panel">
-			<div data-ui='popover-title'>
-				<a href="" data-ui="popover-close">close</a>
+		<section>
+			<div class="container">
+				<p>
+					<a href="firstPopover" data-ui="popover-trigger">Popover 1</a><br>
+					<a href="secondPopover" data-ui="popover-trigger">Popover 2</a>
+				</p>
+				<div id="firstPopover" data-ui="popover-panel">
+					<div data-ui='popover-title'>
+						<a href="" data-ui="popover-close">close</a>
+					</div>
+					Foo
+				</div>
+	    		<div id="secondPopover" data-ui="popover-panel">
+					<div data-ui='popover-title'>
+						<a href="" data-ui="popover-close">close</a>
+					</div>
+					Bar
+				</div>
 			</div>
-			first popover
-		</div>
-    	<div id="secondPopover" data-ui="popover-panel">
-			<div data-ui='popover-title'>
-				<a href="" data-ui="popover-close">close</a>
-			</div>
-			second popover
-		</div>
+		</section>
 		<script>
 			$(function(){
 				$("div[data-ui='popover-panel']").tsPopover({

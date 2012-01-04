@@ -85,9 +85,9 @@
                     
                     evt.easyClose = function () {
                         $("html").data("easyCloseSet", true);
-                        $("html").bind("click", function(e) {
+                        $(document).bind("click", function(e) {
                             var currentPopover = $("[data-ui='popover-panel'][class='current']")[0];
-                            if ($(e.target).parents(currentPopover).length < 1) {
+                            if ($(e.target).closest(currentPopover).length < 1 && $(e.target).attr("data-ui") !== "popover-trigger") {
                                 ctr.close(currentPopover);
                             }
                         });
