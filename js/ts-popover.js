@@ -51,16 +51,18 @@
 				var ctr = {};
 				(function() {
 					ctr.open = function (el) {
+						$("[data-ui='popover-trigger'][href='"+el.id+"']").addClass("current");
 						$(el).addClass("current");
 						fx.tranIn(el);
 					};
 					
 					ctr.close = function (el) {
+						$("[data-ui='popover-trigger'].current").removeClass("current");
 						$(el).removeClass("current");
 						fx.tranOut(el);
 						$(el).css({
-							"top":"50%"
-							, "left":"50%"
+							"top":""
+							, "left":""
 						});
 						$(el).unbind("mousemove");
             			$(el).unbind("mouseup");
