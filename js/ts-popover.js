@@ -56,10 +56,15 @@
 					ctr.close = function (el) {
 						$(el).removeClass("current");
 						fx.tranOut(el);
+						$(el).css({
+							"top":"50%"
+							, "left":"50%"
+						});
+						$(el).unbind("mousemove");
+            			$(el).unbind("mouseup");
 					};
 					
 					ctr.drag = function (el, y, x) {
-						// TODO: work out offset, modify x and y
 						fx.drag(el, y, x);
 					}
 				})();
