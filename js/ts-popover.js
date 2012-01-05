@@ -111,7 +111,6 @@
                             if ($(e.target).closest(el).length < 1 && $(e.target).attr("href") !== $(el).attr("id")) {
                                 ctr.close(el);
                             }
-                            console.log(el);
                         });
                     };
                     
