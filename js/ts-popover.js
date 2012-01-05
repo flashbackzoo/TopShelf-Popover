@@ -107,10 +107,11 @@
                     evt.easyClose = function () {
                         $("html").data("easyCloseSet", true);
                         $(document).bind("click", function(e) {
-                            var el = $("[data-ui='popover-panel'][class='current']")[0];
-                            if ($(e.target).closest(el).length < 1 && $(e.target).attr("data-ui") !== "popover-trigger") {
+                            var el = $("[data-ui='popover-panel'][class$='current']")[0];
+                            if ($(e.target).closest(el).length < 1 && $(e.target).attr("href") !== $(el).attr("id")) {
                                 ctr.close(el);
                             }
+                            console.log(el);
                         });
                     };
                     
