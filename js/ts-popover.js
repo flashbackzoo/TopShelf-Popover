@@ -5,6 +5,7 @@
 			"transition": "simple"
 			, "easyClose": true
 			, "draggable": false
+			, "mask": false
 		}, options);
 		
 		return this.each(function() {
@@ -12,7 +13,6 @@
 				container: this
 				, settings: settings
 				, triggers: $("a[href='"+this.id+"']")
-				, title: $(this).find("[data-ui='popover-title']")[0]
 				, close: $(this).find("[data-ui='popover-close']")[0]
 			};
 			
@@ -24,10 +24,12 @@
 				var fx = {};
 				(function() {
 					fx.tranIn = function(el) {
+						$("[data-ui='popover-mask']").show();
 						$(el).show();
 					};
 					
 					fx.tranOut = function (el) {
+						$("[data-ui='popover-mask']").hide();
 						$(el).hide();
 					};
 					
@@ -144,6 +146,9 @@
                 }
                 if (popover.settings.draggable === true) {
                 	evt.drag();
+                }
+                if (popover.settings.mask === true) {
+                	$("body").append("<div data-ui='popover-mask'></div>");
                 }
 			})();
 		});

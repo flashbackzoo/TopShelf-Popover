@@ -15,15 +15,11 @@
 					<a href="secondPopover" data-ui="popover-trigger">Popover 2</a>
 				</p>
 				<div id="firstPopover" data-ui="popover-panel">
-					<div data-ui='popover-title'>
-						<a href="" data-ui="popover-close">close</a>
-					</div>
+					<a href="" data-ui="popover-close">close</a>
 					Foo
 				</div>
 	    		<div id="secondPopover" data-ui="popover-panel">
-					<div data-ui='popover-title'>
-						<a href="" data-ui="popover-close">close</a>
-					</div>
+					<a href="" data-ui="popover-close">close</a>
 					Bar
 				</div>
 			</div>
@@ -34,6 +30,7 @@
 					"transition": "simple"
 					, "easyClose": true
 					, "draggable": true
+					, "mask": false
 				});
 			});
 		</script>
