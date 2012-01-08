@@ -52,3 +52,6 @@ When set to true, the popover pane is draggable.
 
 ####mask
 When set to true, all content behind the popover is masked out.
+
+## Demo
+[http://flashbackzoo.github.com/TopShelf-Popover/](http://flashbackzoo.github.com/TopShelf-Popover/)
