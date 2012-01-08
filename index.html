@@ -8,22 +8,13 @@
 		<script src="js/ts-popover.js"></script>
 	</head>
 	<body>
-		<section>
-			<div class="container">
-				<p>
-					<a href="firstPopover" data-ui="popover-trigger">Popover 1</a><br>
-					<a href="secondPopover" data-ui="popover-trigger">Popover 2</a>
-				</p>
-				<div id="firstPopover" data-ui="popover-panel">
-					<a href="" data-ui="popover-close">close</a>
-					Foo
-				</div>
-	    		<div id="secondPopover" data-ui="popover-panel">
-					<a href="" data-ui="popover-close">close</a>
-					Bar
-				</div>
-			</div>
-		</section>
+		<a href="firstPopover" data-ui="popover-trigger">Show the Popover</a>
+		
+		<div id="firstPopover" class="popover" data-ui="popover-panel">
+			<a class="close" href="" data-ui="popover-close">close</a>
+			Hello Sailor
+		</div>
+		
 		<script>
 			$(function(){
 				$("div[data-ui='popover-panel']").tsPopover({

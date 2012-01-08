@@ -150,7 +150,7 @@
                 	evt.drag();
                 }
                 if (popover.settings.mask === true) {
-                	$("body").append("<div data-ui='popover-mask'></div>");
+                	$("body").append("<div class='popover-mask' data-ui='popover-mask'></div>");
                 }
 			})();
 		});
