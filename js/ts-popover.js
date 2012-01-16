@@ -1,3 +1,6 @@
+// TopShelf - Popover ~ Copyright (c) 2011 - 2012 David Craig, http://flashbackzoo.net
+// Released under MIT license, http://www.opensource.org/licenses/mit-license.php
+
 (function ($) {
     $.fn.tsPopover = function(options) {
 		// default settings
