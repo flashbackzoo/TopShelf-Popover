@@ -1,4 +1,4 @@
-// TopShelf - Popover ~ Copyright (c) 2011 - 2012 David Craig, http://flashbackzoo.net
+// TopShelf - Popover ~ Copyright (c) 2011 - 2012 David Craig, https://github.com/flashbackzoo/TopShelf-Popover
 // Released under MIT license, http://www.opensource.org/licenses/mit-license.php
 
 (function ($) {
@@ -16,7 +16,7 @@
 				container: this
 				, settings: settings
 				, triggers: $("a[href='" + this.id + "']")
-				, close: $(this).find("[data-ui='popover-close']")[0]
+				, close: $(this).find("[data-ui*='popover-close']")[0]
 			};
 
 			////////////
@@ -27,12 +27,12 @@
 				var fx = {};
 				(function () {
 					fx.tranIn = function (el) {
-						$("[data-ui='popover-mask']").show();
+						$("[data-ui*='popover-mask']").show();
 						$(el).show();
 					};
 
 					fx.tranOut = function (el) {
-						$("[data-ui='popover-mask']").hide();
+						$("[data-ui*='popover-mask']").hide();
 						$(el).hide();
 					};
 
@@ -61,14 +61,14 @@
 				var ctr = {};
 				(function () {
 					ctr.open = function (el) {
-						$("[data-ui='popover-trigger'][href='" + el.id + "']").addClass("current");
+						$("[data-ui*='popover-trigger'][href='" + el.id + "']").addClass("current");
 						$(el).addClass("current");
 						fx.center(el);
 						fx.tranIn(el);
 					};
 
 					ctr.close = function (el) {
-						$("[data-ui='popover-trigger'].current").removeClass("current");
+						$("[data-ui*='popover-trigger'].current").removeClass("current");
 						$(el).removeClass("current");
 						fx.tranOut(el);
 						$(el).css({
@@ -102,7 +102,7 @@
 								$(popover.triggers[i]).bind("click", function (e) {
 									e.preventDefault();
 									if (!$(popover.container).hasClass("current")) {
-										ctr.close($("[data-ui='popover-panel'][class='current']")[0]);
+										ctr.close($("[data-ui*='popover-panel'][class='current']")[0]);
 										ctr.open(popover.container);
 									}
 								});
@@ -122,7 +122,7 @@
 					evt.easyClose = function () {
 						$("html").data("easyCloseSet", true);
 						$(document).bind("click", function (e) {
-							var el = $("[data-ui='popover-panel'][class$='current']")[0];
+							var el = $("[data-ui*='popover-panel'][class$='current']")[0];
 							if ($(e.target).closest(el).length < 1 && $(e.target).attr("href") !== $(el).attr("id")) {
 								ctr.close(el);
 							}
@@ -141,7 +141,15 @@
 								$(popover.container).unbind("mouseup");
 							});
 						});
-					}
+					};
+
+					evt.scrollLock = function (el) {
+						$(window).bind("mousewheel", function (e) {
+							if ($(el).css("display") != "none") {
+								e.preventDefault();
+							};
+						});
+					};
 				})();
 				return evt;
 			};
@@ -154,6 +162,7 @@
 				var fx = simple(popover);
 				var ctr = controls(fx);
 				var evt = events(ctr);
+				var mask = $("[data-ui*='popover-mask']");
 				evt.triggers();
 				evt.closeButton();
 				if ($("html").data("easyCloseSet") !== true && popover.settings.easyClose === true) {
@@ -162,8 +171,10 @@
 				if (popover.settings.draggable === true) {
 					evt.drag();
 				}
-				if (popover.settings.mask === true) {
-					$("body").append("<div class='popover-mask' data-ui='popover-mask'></div>");
+				if (popover.settings.mask === true && mask.length < 1) {
+					mask = "<div class='popover-mask' data-ui='popover-mask'></div>";
+					$("body").append(mask);
+					evt.scrollLock($("[data-ui='popover-mask']"));
 				}
 			})();
 		});
