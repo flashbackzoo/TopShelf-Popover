@@ -101,6 +101,7 @@
 							for (i = 0; i < popover.triggers.length; i += 1) {
 								$(popover.triggers[i]).bind("click", function (e) {
 									e.preventDefault();
+									e.stopPropagation();
 									if (!$(popover.container).hasClass("current")) {
 										ctr.close($("[data-ui*='popover-panel'][class='current']")[0]);
 										ctr.open(popover.container);
