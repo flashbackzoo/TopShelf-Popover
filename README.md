@@ -9,11 +9,9 @@ The Popover plugin for jQuery
     <link rel="stylesheet" href="css/style.css">
 
 ###Add some markup
-We use custom data attributes for JavaScript hooks. CSS classes are used purely for skinning.
+TopShelf Popover uses "data-ui" attributes for JavaScript hooks. CSS classes are only used for styling.
 
-This seperation makes your CSS more manageable and creating new skins easy.
-
-The href of the popover trigger should match the id of the popover wish to target.
+The "href" of your popover trigger should match the "id" of the popover you wish to target.
 
     <a href="firstPopover" data-ui="popover-trigger">Show the Popover</a>
     
@@ -22,27 +20,28 @@ The href of the popover trigger should match the id of the popover wish to targe
         Hello Sailor
     </div>
 
-###Hook it up
-Turn your markup into a Popover. Add this script directly before your </body> tag.
+###Make it go
+Add some jQuery just before your </body> tag.
 
     <script>
         $(function(){
-            $("div[data-ui='popover-panel']").tsPopover();
+            $("*[data-ui='popover-panel']").tsPopover();
         });
     </script>
 
-###Settings
-You can pass .tsPopover() some optional settings. Here are the defaults...
+###Settings (optional)
+You can pass .tsPopover() some settings. Here are the defaults...
 
     $("div[data-ui='popover-panel']").tsPopover({
         "transition": "simple"
         , "easyClose": true
         , "draggable": true
         , "mask": false
+        , "callbacks" : { "open" : function () { return false; } , "close" : function () { return false; } }
     });
 
 ####transition
-The type of transition to use. Currently available transitions are "simple".
+The type of transition to use. There's only the show / hide "simple" transition right now...
 
 ####easyClose
 When set to true, any clicks outside the popover pane will close the popover.
@@ -53,5 +52,14 @@ When set to true, the popover pane is draggable.
 ####mask
 When set to true, all content behind the popover is masked out.
 
-## Demo
-[http://flashbackzoo.github.com/TopShelf-Popover/](http://flashbackzoo.github.com/TopShelf-Popover/)
+####callbacks
+You can pass a callback function for each of the public methods.
+
+###Public methods
+TopShelf Popover has two public methods "open" and "close". You can call these methods like...
+
+	$("#firstPopover").tsPopover("open");
+	
+You can also pass a callback into a public method call like...
+
+	$("#firstPopover").tsPopover("open", myCallback());

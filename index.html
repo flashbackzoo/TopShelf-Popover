@@ -18,10 +18,11 @@
 		<script>
 			$(function(){
 				$("div[data-ui='popover-panel']").tsPopover({
-					"transition": "simple"
-					, "easyClose": true
-					, "draggable": true
-					, "mask": false
+					"transition" : "simple"
+					, "easyClose" : true
+					, "draggable" : true
+					, "mask" : false
+					, "callbacks" : { "open" : function () { console.log("open callback fired"); } , "close" : function () { console.log("close callback fired"); }}
 				});
 			});
 		</script>
