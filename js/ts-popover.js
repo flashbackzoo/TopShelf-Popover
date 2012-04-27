@@ -143,21 +143,13 @@
 							$(popover.container).bind("mousedown", function (e) {
 								var offsetY = e.pageY - popover.container.offsetTop + parseInt($(popover.container).css("margin-top"), 10)
 									, offsetX = e.pageX - popover.container.offsetLeft + parseInt($(popover.container).css("margin-left"), 10);
-								$(popover.container).bind("mousemove", function (e) {
+								$(document).bind("mousemove", function (e) {
 									drag(popover.container, e.pageY - offsetY, e.pageX - offsetX);
 								});
-								$(popover.container).bind("mouseup", function (e) {
-									$(popover.container).unbind("mousemove");
-									$(popover.container).unbind("mouseup");
+								$(document).bind("mouseup", function (e) {
+									$(document).unbind("mousemove");
+									$(document).unbind("mouseup");
 								});
-							});
-						};
-	
-						evt.scrollLock = function (el) {
-							$(window).bind("mousewheel", function (e) {
-								if ($(el).css("display") != "none") {
-									e.preventDefault();
-								};
 							});
 						};
 					})();
