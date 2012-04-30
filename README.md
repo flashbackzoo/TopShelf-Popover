@@ -1,5 +1,8 @@
 #TopShelf - Popover
-Changes = The Popover plugin for jQuery
+The Popover plugin for jQuery
+
+##About this Fork
+The premise for this fork is to add some additional transitions :)
 
 ##Setup
 ###Add the dependencies
