@@ -1,5 +1,5 @@
 #TopShelf - Popover
-The Popover plugin for jQuery
+Changes = The Popover plugin for jQuery
 
 ##Setup
 ###Add the dependencies
