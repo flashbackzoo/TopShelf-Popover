@@ -171,7 +171,6 @@
 					if (popover.settings.mask === true && mask.length < 1) {
 						mask = "<div class='popover-mask' data-ui='popover-mask'></div>";
 						$("body").append(mask);
-						evt.scrollLock($("[data-ui='popover-mask']"));
 					}
 				})();
 			});
