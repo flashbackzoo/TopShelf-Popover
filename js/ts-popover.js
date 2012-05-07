@@ -26,7 +26,9 @@
 				});
 				$(el).unbind("mousemove");
 				$(el).unbind("mouseup");
-				callback();
+				if (callback) {
+					callback();
+				}
 				return el;
 			}
 		};
@@ -45,7 +47,7 @@
 				fx.tranIn = function (el, callback) {
 					$("[data-ui*='popover-mask']").show();
 					$(el).show();
-					if (callback !== undefined) {
+					if (callback) {
 						callback();
 					}
 				};
