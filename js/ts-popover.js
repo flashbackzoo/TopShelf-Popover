@@ -1,76 +1,86 @@
 // TopShelf - Popover ~ Copyright (c) 2011 - 2012 David Craig, https://github.com/flashbackzoo/TopShelf-Popover
 // Released under MIT license, http://www.opensource.org/licenses/mit-license.php
-
 (function ($) {
 	$.fn.tsPopover = function (arg, callback) {
 		// PUBLIC CONTROLS
 		var methods = {
 			open : function (el, callback) {
-				var fx = simple();
+				var fx = _transitions.tranIn(el, callback);
 				$("[data-ui*='popover-trigger'][href='" + el.id + "']").addClass("current");
 				$(el).addClass("current");
-				fx.center(el);
-				fx.tranIn(el, callback);
 				return el;
 			}
-			, close : function (el, callback) {
-				var fx = simple();
+			,close : function (el, callback) {
+				var fx = _transitions.tranOut(el);
 				$("[data-ui*='popover-trigger'].current").removeClass("current");
 				$(el).removeClass("current");
-				fx.tranOut(el);
-				$(el).css({
-					"top" : ""
-					, "left" : ""
-					, "margin-left" : ""
-					, "margin-top" : ""
-				});
 				$(el).unbind("mousemove");
-				$(el).unbind("mouseup");
-				callback();
+				$(el).unbind("mouseup");				
+				callback();		
 				return el;
 			}
 		};
-		
+			
 		// PRIVATE CONTROLS
 		function drag (el, y, x) {
-			var fx = simple();
+			var fx = _transitions;
 			fx.drag(el, y, x);
 		}
 		
-		// TRANSITIONS
-		var simple = function () {
-			var fx = {};
-			
-			(function () {
-				fx.tranIn = function (el, callback) {
-					$("[data-ui*='popover-mask']").show();
-					$(el).show();
-					if (callback !== undefined) {
-						callback();
+		function resetPopover(el){
+			$(el).css({"top": "", "left": "",	"margin-left": "", "margin-top": "" });
+		}
+		
+	 _transitions = {
+			tranIn: function (el, callback) {	
+					if(settings.transition == 'simple'){
+						$("[data-ui*='popover-mask']").show();
+						$(el).css({
+							"margin-left": "-" + $(el).outerWidth(true) / 2 + "px",
+							"margin-top": "-" + $(el).outerHeight(true) / 2 + "px"
+						}).show();						
 					}
-				};
-				
-				fx.tranOut = function (el) {
-					$("[data-ui*='popover-mask']").hide();
-					$(el).hide();
-				};
-				
-				fx.center = function (el) {
-					$(el).css({
-						"margin-left": "-" + $(el).outerWidth(true) / 2 + "px",
-						"margin-top": "-" + $(el).outerHeight(true) / 2 + "px"
-					});
-				};
-				
-				fx.drag = function (el, y, x) {
+					else if(settings.transition == 'fade'){
+						$("[data-ui*='popover-mask']").fadeIn();
+						$(el).css({
+							"margin-left": "-" + $(el).outerWidth(true) / 2 + "px",
+							"margin-top": "-" + $(el).outerHeight(true) / 2 + "px"
+						}).fadeIn();	
+					}
+					else if(settings.transition == 'slide'){
+						$("[data-ui*='popover-mask']").show();
+						$(el).css({
+							"margin-left": "-" + $(el).outerWidth(true) / 2 + "px",
+							"margin-top": "-" + $(el).outerHeight(true) / 2 + "px"
+						}).slideDown();	
+					}
+					if (callback !== undefined) { callback(); }
+				},
+				tranOut: function (el) {
+					if(settings.transition == 'simple'){
+						$("[data-ui*='popover-mask']").hide();						
+						$(el).hide();
+					}
+					else if(settings.transition == 'fade'){
+						$("[data-ui*='popover-mask']").fadeOut();
+						$(el).fadeOut('slow', function() {
+							resetPopover(el);		
+						});						
+					}
+					else if(settings.transition == 'slide'){
+						$("[data-ui*='popover-mask']").fadeOut();
+						$(el).slideUp('slow', function() {
+							resetPopover(el);		
+						});	
+					}
+				},
+				drag: function (el, y, x) {
 					$(el).css({
 						top: y + "px"
 						, left: x + "px"
 					});
 				}
-			})();
-			return fx;
-		};
+		}
 		
 		// determine if 'arg' is a method call, settings object, or something else
 		if (methods[arg]) {
@@ -171,8 +181,7 @@
 					if (popover.settings.mask === true && mask.length < 1) {
 						mask = "<div class='popover-mask' data-ui='popover-mask'></div>";
 						$("body").append(mask);
-						evt.scrollLock($("[data-ui='popover-mask']"));
-					}
+					}					
 				})();
 			});
 		} else {
