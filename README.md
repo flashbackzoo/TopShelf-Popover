@@ -44,7 +44,7 @@ You can pass .tsPopover() some settings. Here are the defaults...
     });
 
 ####transition
-The type of transition to use. There's only the show / hide "simple" transition right now...
+The type of transition to use. Currently there is 'simple', 'fade' and 'slide'. Simple does as it suggests does a very plain hide/show. Fade, fades in and out, while Slide does a rather poor job, and is there for testing. More transitions to be added in future. Some ideas are, bounce, zoom etc. 
 
 ####easyClose
 When set to true, any clicks outside the popover pane will close the popover.
