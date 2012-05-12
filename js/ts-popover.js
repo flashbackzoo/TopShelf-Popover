@@ -3,7 +3,7 @@
 
 (function ($) {
 	$.fn.tsPopover = function (arg, callback) {
-		// PUBLIC CONTROLS
+		// PUBLIC METHODS
 		var methods = {
 			open : function (el, callback) {
 				var fx = simple();
@@ -31,7 +31,7 @@
 			}
 		};
 		
-		// PRIVATE CONTROLS
+		// PRIVATE METHODS
 		function drag (el, y, x) {
 			var fx = simple();
 			fx.drag(el, y, x);
@@ -75,7 +75,7 @@
 		// determine if 'arg' is a method call, settings object, or something else
 		if (methods[arg]) {
 			return methods[arg].call(methods, this, callback);
-		} else if (typeof arg === "object") {
+		} else if (typeof arg === "object" || arg === undefined) {
 		
 			// DEFAULT POPOVER SETTINGS
 			var settings = $.extend({
