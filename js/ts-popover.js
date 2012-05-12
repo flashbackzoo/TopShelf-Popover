@@ -29,7 +29,6 @@
 		
 		function resetPopover(el){
 			$(el).css({"top": "", "left": "",	"margin-left": "", "margin-top": "" });
-			console.log('Reset Popover Function Fired');
 		}
 		
 	 _transitions = {
