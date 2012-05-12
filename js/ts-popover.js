@@ -29,6 +29,7 @@
 		
 		function resetPopover(el){
 			$(el).css({"top": "", "left": "",	"margin-left": "", "margin-top": "" });
+			console.log('Reset Popover Function Fired');
 		}
 		
 	 _transitions = {
@@ -59,7 +60,9 @@
 				tranOut: function (el) {
 					if(settings.transition == 'simple'){
 						$("[data-ui*='popover-mask']").hide();						
-						$(el).hide();
+						$(el).hide(0,  function() {
+							resetPopover(el);		
+						});
 					}
 					else if(settings.transition == 'fade'){
 						$("[data-ui*='popover-mask']").fadeOut();
