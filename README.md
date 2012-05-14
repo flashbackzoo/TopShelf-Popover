@@ -52,7 +52,7 @@ When set to true, the popover pane is draggable.
 
 ####mask
 When set to true, all content behind the popover is masked out. You will need to add a mask element to your markup like...
-<div class='popover-mask' data-ui='popover-mask'></div>
+    <div class='popover-mask' data-ui='popover-mask'></div>
 
 ####callbacks
 You can pass a callback function for each of the public methods.
@@ -62,7 +62,7 @@ TopShelf Popover has two public methods "open" and "close".
 
 Public method calls require the name of the method to call, and the transition you want to use...
 
-	$("#firstPopover").tsPopover("open", "simple");
+    $("#firstPopover").tsPopover("open", "simple");
 	
 You can also pass a callback into a public method call like...
 
