@@ -21,7 +21,7 @@ The "href" of your popover trigger should match the "id" of the popover you wish
     </div>
 
 ###Make it go
-Add some jQuery just before your </body> tag.
+Add some jQuery just before your closing body tag.
 
     <script>
         $(function(){
