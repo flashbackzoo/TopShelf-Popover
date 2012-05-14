@@ -58,10 +58,12 @@ When set to true, all content behind the popover is masked out. You will need to
 You can pass a callback function for each of the public methods.
 
 ###Public methods
-TopShelf Popover has two public methods "open" and "close". You can call these methods like...
+TopShelf Popover has two public methods "open" and "close".
 
-	$("#firstPopover").tsPopover("open");
+Public method calls require the name of the method to call, and the transition you want to use...
+
+	$("#firstPopover").tsPopover("open", "simple");
 	
 You can also pass a callback into a public method call like...
 
-	$("#firstPopover").tsPopover("open", myCallback());
+	$("#firstPopover").tsPopover("open", "simple", myCallback());

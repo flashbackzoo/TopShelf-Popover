@@ -2,9 +2,8 @@
 // Released under MIT license, http://www.opensource.org/licenses/mit-license.php
 
 (function ($) {
-    $.fn.tsPopover = function (arg, callback) {
+    $.fn.tsPopover = function (arg, transition, callback) {
         var allPopoverObjects = [];
-
         // TRANSITIONS (CALLED BY PUBLIC AND PRIVATE METHODS)
         var transitions = {
             drag : function (popoverContainer, y, x) {
@@ -97,7 +96,20 @@
         // METHOD CALLING LOGIC. FIGURE OUT WHAT TO DO WHEN .tsPopover IS CALLED
         if (publicMethods[arg]) {
             // PUBLIC METHOD CALL
-            return publicMethods[arg].call(publicMethods, this, callback);
+            var popover = {
+                container : this
+                , settings : {
+                    transition : transition
+                    , callbacks : {
+                        open : callback
+                        , close : callback
+                    }
+                }
+            };
+            if ($("[data-ui='popover-mask']").length) {
+                popover.settings.mask = true;
+            }
+            return publicMethods[arg].call(publicMethods, popover, popover);
         } else if (typeof arg === "object" || arg === undefined) {
             // NEW POPOVER CALL
             var settings = $.extend({
