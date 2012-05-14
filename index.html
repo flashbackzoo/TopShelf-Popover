@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>TopShelf Web UI - Popover</title>
 		<link rel="stylesheet" href="css/style.css">
-		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 		<script src="js/ts-popover.js"></script>
 	</head>
 	<body>
@@ -14,6 +14,8 @@
 			<a class="close" href="" data-ui="popover-close">close</a>
 			Hello Sailor
 		</div>
+
+        <div class='popover-mask' data-ui='popover-mask'></div>
 		
 		<script>
 			$(function(){
@@ -21,8 +23,8 @@
 					"transition" : "simple"
 					, "easyClose" : true
 					, "draggable" : true
-					, "mask" : false
-					, "callbacks" : { "open" : function () { console.log("open callback fired"); } , "close" : function () { console.log("close callback fired"); }}
+					, "mask" : true
+					, "callbacks" : { "open" : function () { return false; } , "close" : function () { return false; }}
 				});
 			});
 		</script>

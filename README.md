@@ -4,7 +4,7 @@ The Popover plugin for jQuery
 ##Setup
 ###Add the dependencies
 
-    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script src="js/ts-popover.js"></script>
     <link rel="stylesheet" href="css/style.css">
 
@@ -25,7 +25,7 @@ Add some jQuery just before your </body> tag.
 
     <script>
         $(function(){
-            $("*[data-ui='popover-panel']").tsPopover();
+            $("[data-ui='popover-panel']").tsPopover();
         });
     </script>
 
@@ -41,7 +41,8 @@ You can pass .tsPopover() some settings. Here are the defaults...
     });
 
 ####transition
-The type of transition to use. There's only the show / hide "simple" transition right now...
+The type of transition to use. Currently there is "simple" and "fade".
+"simple" does a basic show / hide. "fade" fades in and out.
 
 ####easyClose
 When set to true, any clicks outside the popover pane will close the popover.
@@ -50,7 +51,8 @@ When set to true, any clicks outside the popover pane will close the popover.
 When set to true, the popover pane is draggable.
 
 ####mask
-When set to true, all content behind the popover is masked out.
+When set to true, all content behind the popover is masked out. You will need to add a mask element to your markup like...
+<div class='popover-mask' data-ui='popover-mask'></div>
 
 ####callbacks
 You can pass a callback function for each of the public methods.

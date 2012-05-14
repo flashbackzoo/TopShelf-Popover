@@ -32,7 +32,7 @@
 	background: linear-gradient(top,  #fefefe 0%,#eaeaea 100%); /* W3C */
 	border:1px solid #dbdbdb;
 	border-radius:3px;
-	box-shadow:0px 3px 30px 0px #eaeaea;
+	box-shadow:0px 3px 30px 0px rgba(0,0,0,0.3);
 }
 .close{
 	position:absolute;
@@ -45,7 +45,5 @@
 	background:url(../img/close.png) no-repeat;
 }
 .popover-mask{
-	background:white;
-	opacity:0.5;
-	filter:alpha(opacity=50);
+	background:rgba(0,0,0,0.3);
 }

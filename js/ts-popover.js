@@ -3,86 +3,108 @@
 
 (function ($) {
 	$.fn.tsPopover = function (arg, callback) {
+        var allPopoverObjects = [];
+
+        // TRANSITIONS (CALLED BY PUBLIC AND PRIVATE METHODS)
+        var transitions = {
+            drag : function (popoverContainer, y, x) {
+                $(popoverContainer).css({
+                    top : y + "px"
+                    , left : x + "px"
+                });
+            }
+            , simple : {
+                tranIn : function (popover) {
+                    privateMethods.mask(popover.settings.mask, function () {
+                        $("[data-ui*='popover-mask']").show();
+                    });
+                    $(popover.container).show();
+                    privateMethods.openCallback(popover);
+                }
+                , tranOut : function (popover) {
+                    privateMethods.mask(popover.settings.mask, function () {
+                        $("[data-ui*='popover-mask']").hide();
+                    });
+                    $(popover.container).hide();
+                    privateMethods.closeCallback(popover);
+                }
+            }
+            , fade : {
+                tranIn : function (popover) {
+                    privateMethods.mask(popover.settings.mask, function () {
+                        $("[data-ui*='popover-mask']").fadeIn();
+                    });
+                    $(popover.container).fadeIn(function () {
+                        privateMethods.openCallback(popover);
+                    });
+                }
+                , tranOut : function (popover) {
+                    privateMethods.mask(popover.settings.mask, function () {
+                        $("[data-ui*='popover-mask']").fadeOut();
+                    });
+                    $(popover.container).fadeOut("slow", function () {
+                        privateMethods.closeCallback(popover);
+                    });
+                }
+            }
+        };
+
 		// PUBLIC METHODS
-		var methods = {
-			open : function (el, callback) {
-				var fx = simple();
-				$("[data-ui*='popover-trigger'][href='" + el.id + "']").addClass("current");
-				$(el).addClass("current");
-				fx.center(el);
-				fx.tranIn(el, callback);
-				return el;
+		var publicMethods = {
+			open : function (popover) {
+				$("[data-ui*='popover-trigger'][href='" + popover.container.id + "']").addClass("current");
+				$(popover.container).addClass("current");
+                transitions[popover.settings.transition].tranIn(popover);
 			}
-			, close : function (el, callback) {
-				var fx = simple();
+			, close : function (popover) {
 				$("[data-ui*='popover-trigger'].current").removeClass("current");
-				$(el).removeClass("current");
-				fx.tranOut(el);
-				$(el).css({
-					"top" : ""
-					, "left" : ""
-					, "margin-left" : ""
-					, "margin-top" : ""
-				});
-				$(el).unbind("mousemove");
-				$(el).unbind("mouseup");
-				callback();
-				return el;
+				$(popover.container).removeClass("current");
+                transitions[popover.settings.transition].tranOut(popover);
 			}
 		};
 		
 		// PRIVATE METHODS
-		function drag (el, y, x) {
-			var fx = simple();
-			fx.drag(el, y, x);
-		}
+        var privateMethods = {
+            mask : function (bool, callback) {
+                if (bool) {
+                    callback();
+                }
+            }
+            , drag : function (popover, y, x) {
+                transitions.drag(popover.container, y, x);
+            }
+            , openCallback : function (popover) {
+                if (popover.settings.callbacks.open !== undefined) {
+                    popover.settings.callbacks.open();
+                }
+            }
+            , closeCallback : function (popover) {
+                privateMethods.resetPopover(popover);
+                if (popover.settings.callbacks.close !== undefined) {
+                    popover.settings.callbacks.close();
+                }
+            }
+            , resetPopover : function (popover) {
+                $(popover.container).css({
+                    "top" : ""
+                    , "left" : ""
+                    , "margin-left" : ""
+                    , "margin-top" : ""
+                });
+            }
+        };
 		
-		// TRANSITIONS
-		var simple = function () {
-			var fx = {};
-			
-			(function () {
-				fx.tranIn = function (el, callback) {
-					$("[data-ui*='popover-mask']").show();
-					$(el).show();
-					if (callback !== undefined) {
-						callback();
-					}
-				};
-				
-				fx.tranOut = function (el) {
-					$("[data-ui*='popover-mask']").hide();
-					$(el).hide();
-				};
-				
-				fx.center = function (el) {
-					$(el).css({
-						"margin-left": "-" + $(el).outerWidth(true) / 2 + "px",
-						"margin-top": "-" + $(el).outerHeight(true) / 2 + "px"
-					});
-				};
-				
-				fx.drag = function (el, y, x) {
-					$(el).css({
-						top: y + "px"
-						, left: x + "px"
-					});
-				}
-			})();
-			return fx;
-		};
-		
-		// determine if 'arg' is a method call, settings object, or something else
-		if (methods[arg]) {
-			return methods[arg].call(methods, this, callback);
+		// METHOD CALLING LOGIC. FIGURE OUT WHAT TO DO WHEN .tsPopover IS CALLED
+		if (publicMethods[arg]) {
+            // PUBLIC METHOD CALL
+			return publicMethods[arg].call(publicMethods, this, callback);
 		} else if (typeof arg === "object" || arg === undefined) {
-		
-			// DEFAULT POPOVER SETTINGS
+			// NEW POPOVER CALL
 			var settings = $.extend({
 				"transition" : "simple"
 				, "easyClose" : true
 				, "draggable" : false
-				, "mask" : false
+				, "mask" : true
 				, "callbacks" : { "open" : function () { return false; }, "close" : function () { return false; }}
 			}, arg);
 
@@ -95,46 +117,43 @@
 				};
 	
 				// EVENTS
-				var events = function (methods) {
+				var events = function (publicMethods, privateMethods) {
 					var evt = {};
-					var i = 0;
 					(function () {
 						evt.triggers = function () {
 							if (popover.triggers.length > 0) {
-								for (i = 0; i < popover.triggers.length; i += 1) {
-									$(popover.triggers[i]).bind("click", function (e) {
+								$(popover.triggers).each(function () {
+									$(this).click(function (e) {
 										e.preventDefault();
-										e.stopPropagation();
 										if (!$(popover.container).hasClass("current")) {
 											var openPopovers = $("[data-ui*='popover-panel'][class='current']");
 											if (openPopovers.length) {
-												$(openPopovers).each(function(index, value) {
-													methods.close(this, popover.settings.callbacks.close);
+												$(allPopoverObjects).each(function(index, value) {
+													publicMethods.close(value);
 												});
 											}
-											methods.open(popover.container, popover.settings.callbacks.open);
+											publicMethods.open(popover);
 										}
 									});
-								}
+								});
 							}
 						};
 	
 						evt.closeButton = function () {
 							if (popover.close) {
-								$(popover.close).bind("click", function (e) {
+								$(popover.close).click(function (e) {
 									e.preventDefault();
-									e.stopPropagation();
-									methods.close(popover.container, popover.settings.callbacks.close);
+									publicMethods.close(popover);
 								});
 							}
 						};
 	
 						evt.easyClose = function () {
-							$("html").data("easyCloseSet", true);
+							$("html").data("easyCloseHasBeenSet", true);
 							$(document).bind("click", function (e) {
 								var el = $("[data-ui*='popover-panel'][class$='current']")[0];
 								if ($(e.target).closest(el).length < 1 && $(e.target).attr("href") !== $(el).attr("id")) {
-									methods.close(el, popover.settings.callbacks.close);
+									publicMethods.close(popover);
 								}
 							});
 						};
@@ -144,7 +163,7 @@
 								var offsetY = e.pageY - popover.container.offsetTop + parseInt($(popover.container).css("margin-top"), 10)
 									, offsetX = e.pageX - popover.container.offsetLeft + parseInt($(popover.container).css("margin-left"), 10);
 								$(document).bind("mousemove", function (e) {
-									drag(popover.container, e.pageY - offsetY, e.pageX - offsetX);
+									privateMethods.drag(popover, e.pageY - offsetY, e.pageX - offsetX);
 								});
 								$(document).bind("mouseup", function (e) {
 									$(document).unbind("mousemove");
@@ -156,22 +175,22 @@
 					return evt;
 				};
 	
-				// LIFT OFF
+				// INITIALISE
 				(function () {
-					var evt = events(methods);
-					var mask = $("[data-ui*='popover-mask']");
+					var evt = events(publicMethods, privateMethods);
+
 					evt.triggers();
 					evt.closeButton();
-					if ($("html").data("easyCloseSet") !== true && popover.settings.easyClose === true) {
+
+					if ($("html").data("easyCloseHasBeenSet") !== true && popover.settings.easyClose === true) {
 						evt.easyClose();
 					}
+
 					if (popover.settings.draggable === true) {
 						evt.drag();
 					}
-					if (popover.settings.mask === true && mask.length < 1) {
-						mask = "<div class='popover-mask' data-ui='popover-mask'></div>";
-						$("body").append(mask);
-					}
+
+                    allPopoverObjects[allPopoverObjects.length] = popover;
 				})();
 			});
 		} else {
