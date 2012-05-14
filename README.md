@@ -52,6 +52,7 @@ When set to true, the popover pane is draggable.
 
 ####mask
 When set to true, all content behind the popover is masked out. You will need to add a mask element to your markup like...
+
     <div class='popover-mask' data-ui='popover-mask'></div>
 
 ####callbacks
