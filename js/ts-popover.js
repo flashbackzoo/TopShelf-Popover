@@ -1,4 +1,4 @@
-// TopShelf - Popover ~ Copyright (c) 2011 - 2012 David Craig, https://github.com/flashbackzoo/TopShelf-Popover
+// TopShelf - Popover ~ Copyright (c) 2011 - 2012 TopShelf Solutions Limited, https://github.com/flashbackzoo/TopShelf-Popover
 // Released under MIT license, http://www.opensource.org/licenses/mit-license.php
 
 (function ($) {
@@ -58,7 +58,9 @@
             , close : function (popover) {
                 $("[data-ui*='popover-trigger'].current").removeClass("current");
                 $(popover.container).removeClass("current");
-                transitions[popover.settings.transition].tranOut(popover);
+                try {
+                    transitions[popover.settings.transition].tranOut(popover);
+                } catch (e) {}
             }
         };
 
@@ -90,6 +92,16 @@
                     , "margin-left" : ""
                     , "margin-top" : ""
                 });
+            }
+            , getPopoverObjectById : function (containerIdToFind) {
+                var matchedPopover = {};
+                $(allPopoverObjects).each(function (i, v) {
+                    currentContainerId = $(v.container).attr("id");
+                    if (currentContainerId === containerIdToFind) {
+                        matchedPopover = v;
+                    }
+                });
+                return matchedPopover;
             }
         };
 
@@ -165,7 +177,7 @@
                             $(document).bind("click", function (e) {
                                 var el = $("[data-ui*='popover-panel'][class$='current']")[0];
                                 if ($(e.target).closest(el).length < 1 && $(e.target).attr("href") !== $(el).attr("id")) {
-                                    publicMethods.close(popover);
+                                    publicMethods.close(privateMethods.getPopoverObjectById($(el).attr("id")));
                                 }
                             });
                         };
