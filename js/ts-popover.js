@@ -17,6 +17,7 @@
                     privateMethods.mask(popover.settings.mask, function () {
                         $("[data-ui*='popover-mask']").show();
                     });
+                    privateMethods.centerPopover(popover);
                     $(popover.container).show();
                     privateMethods.openCallback(popover);
                 }
@@ -33,6 +34,7 @@
                     privateMethods.mask(popover.settings.mask, function () {
                         $("[data-ui*='popover-mask']").fadeIn();
                     });
+                    privateMethods.centerPopover(popover);
                     $(popover.container).fadeIn(function () {
                         privateMethods.openCallback(popover);
                     });
@@ -102,6 +104,12 @@
                     }
                 });
                 return matchedPopover;
+            }
+            , centerPopover : function (popover) {
+                $(popover.container).css({
+                    "margin-top" : "-" + $(popover.container).outerHeight() / 2 + "px"
+                    , "margin-left" : "-" + $(popover.container).outerWidth() / 2 + "px"
+                });
             }
         };
 
