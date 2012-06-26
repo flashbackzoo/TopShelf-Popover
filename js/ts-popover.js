@@ -157,6 +157,7 @@
                                 $(popover.triggers).each(function () {
                                     $(this).click(function (e) {
                                         e.preventDefault();
+    									e.stopPropagation();
                                         if (!$(popover.container).hasClass("current")) {
                                             var openPopovers = $("[data-ui*='popover-panel'][class='current']");
                                             if (openPopovers.length) {
