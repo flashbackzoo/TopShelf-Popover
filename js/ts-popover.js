@@ -78,13 +78,13 @@
             }
             , openCallback : function (popover) {
                 if (popover.settings.callbacks.open !== undefined) {
-                    popover.settings.callbacks.open();
+                    popover.settings.callbacks.open(popover);
                 }
             }
             , closeCallback : function (popover) {
                 privateMethods.resetPopover(popover);
                 if (popover.settings.callbacks.close !== undefined) {
-                    popover.settings.callbacks.close();
+                    popover.settings.callbacks.close(popover);
                 }
             }
             , resetPopover : function (popover) {
